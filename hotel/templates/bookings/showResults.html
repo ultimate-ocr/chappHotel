@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  {% load customtags %}
+  {% load static %}
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <title>Chapp Hotel</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+  <form>
+
+    <table id="table_id" class="display">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>N. of people</th>
+                <th>Price per day</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+                <tr>
+                    <td>{{room.description}}</td>
+                    <td>{{room.peopleMax}}</td>
+                    <td>{{room.price}}</td>
+                    <td>{{room.price|mult:days }} </td>
+                    <td><input type="button" value="Book" onclick="ProceedToBook({{room.id}}, {{days}})"></td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+</form>
+<div style="float:right">
+        <a href="/accounts/logout">Log Out</a>
+</div>
+
+
+
+<script defer src="{% static 'js/userbookings.js' %}" type="text/javascript"> 		</script>
+
+</body>
+</html>

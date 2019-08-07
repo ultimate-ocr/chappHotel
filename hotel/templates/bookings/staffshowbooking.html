@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  {% load customtags %}
+  {% load static %}
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <title>Chapp Hotel</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+    <div style="float:left">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>Check In Date</th>
+                    <th>Check Out Date</th>
+                    <th>Room Number</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{booking.checkInDate}}</td>
+                        <td>{{booking.checkOutDate}}</td>
+                        <td>{{booking.room__id}}</td>
+                        <td>{{booking.status }} </td>
+                        <td>{{booking.price }} </td>
+                        {% if booking.status == 'conf' %}
+                            <td>
+                                <input type="button" value="Cancel " onclick="cancelBooking({{booking.id}})">
+                                <input type="button" value="CheckIn " onclick="doCheckIn({{booking.id}})">                        
+                            </td>
+                        {% elif booking.status == 'cIn' %}
+                            <td>
+                                <input type="button" value="CheckOut " onclick="doCheckOut({{booking.id}})">
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+        {% if all  %}
+            <a href="/showtodaybookings">View today bookings</a>
+        {% else %}
+            <a href="/logedin">View all bookings</a>
+        {% endif %}
+    </div>
+    <div style="float:right">
+        <a href="/accounts/logout">Log Out</a>
+    </div>
+
+
+
+<script defer src="{% static 'js/staffbookings.js' %}" type="text/javascript"> 		</script>
+
+</body>
+</html>
