@@ -25,14 +25,14 @@ $(function () {
 
 function ProceedToBook(roomId, days){
     $.ajax({
-        url: '/checkLogIn',
+        url: '/getcontactinfo',
         data: {
             'roomId': roomId,
         },
         type: 'POST',
         success: function(response) {
             console.log(response.redirectUrl);
-            window.location.replace(response.redirectUrl);
+            //window.location.replace(response.redirectUrl);
         },
         error: function(error) {
             console.log(error);

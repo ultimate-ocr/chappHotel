@@ -38,7 +38,12 @@ class Booking(models.Model):
     people = models.IntegerField(null=False, 
                                blank=False, 
                                default=2)
-    models.ForeignKey(User, on_delete=models.CASCADE)
+    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    telephone   = models.CharField(max_length=20)
+    creditCard  = models.CharField(max_length=20)
+
+    comments = models.CharField(max_length=500)
 
     @staticmethod
     def getAvailableRooms():
@@ -72,5 +77,8 @@ class Booking(models.Model):
         bookings = Booking.objects.filter(Q(checkInDate = (date.today())) |\
                                  Q(checkOutDate = (date.today())))
         return bookings
+
+    def getUserBookings(user):
+        return Booking.objects.filter(client = user)
 
         

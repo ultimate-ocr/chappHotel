@@ -1,6 +1,7 @@
 from django import forms
 from datetime import datetime, timedelta
 from django.contrib.admin import widgets
+from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
 
 from .models import Booking
 from django.contrib.auth.models import User
@@ -49,3 +50,12 @@ class UserInfoForm(forms.ModelForm):
         self.checkInDate    = datetime.today()
         self.checkOutDate   = datetime.now() + timedelta(days=30)
         '''
+
+class GetContactInforForm(forms.ModelForm):
+    required_css_class = 'required'
+    
+    class Meta:
+        model = Booking
+        fields = ('telephone','creditCard','comments')
+
+
