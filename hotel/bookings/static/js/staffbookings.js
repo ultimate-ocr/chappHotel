@@ -92,3 +92,7 @@ function doCheckOut(bookingId){
         }
     });
 }
+
+$(document).ready( function () {
+    $('#bookings').DataTable();
+} );

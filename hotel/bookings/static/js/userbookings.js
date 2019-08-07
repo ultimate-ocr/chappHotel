@@ -39,3 +39,8 @@ function ProceedToBook(roomId, days){
         }
     });
 }
+
+
+$(document).ready( function () {
+    $('#bookings').DataTable();
+} );
