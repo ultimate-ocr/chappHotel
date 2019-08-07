@@ -32,7 +32,7 @@ function ProceedToBook(roomId, days){
         type: 'POST',
         success: function(response) {
             console.log(response.redirectUrl);
-            //window.location.replace(response.redirectUrl);
+            window.location.replace('/getcontactinfo');
         },
         error: function(error) {
             console.log(error);

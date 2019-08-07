@@ -19,6 +19,7 @@ urlpatterns = [
     path('showtodaybookings',   views.showTodayBookings, name='do_checkout'),
     path('profile',             views.showUserBookings, name='show_user_bookings'),
     path('getcontactinfo',      views.getContactInfo, name='get_contact_info'),
+    path('book',                views.book, name='book'),
     
     
 ]

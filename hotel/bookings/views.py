@@ -15,6 +15,10 @@ class views(view):
 
 def inputBookingInfo(request):
     try:
+        del request.session['checkIn']
+        del request.session['checkOut']
+        del request.session['people']
+        del request.session['room']
         searchForm = SearchForm()
         return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
     except Exception as e:
@@ -24,16 +28,20 @@ def inputBookingInfo(request):
 def searchRoom(request):
     try:
         if request.method == 'POST':
+            #extracting info from form
             checkIn  = request.POST.get('checkInDate')
             request.session['checkIn'] = checkIn
             checkIn  = datetime.datetime.strptime(checkIn, "%d-%m-%Y").date()
             checkOut = request.POST.get('checkOutDate')
-            request.session['checkOutDate'] = checkOut
+            request.session['checkOut'] = checkOut
             checkOut = datetime.datetime.strptime(checkOut, "%d-%m-%Y").date()
+            people=request.POST.get('people')
+            request.session['people'] = people
+
             if checkIn >= checkOut or checkIn < date.today():
                 searchForm = SearchForm()
                 return render(request, "bookings/searchroom.html", {'searchForm':searchForm, 'error':'Please check dates'})
-            people=request.POST.get('people')
+            
             days = (checkOut - checkIn).days
 
             rooms = Room.objects.filter(peopleMax__gte = people).\
@@ -143,13 +151,33 @@ def showUserBookings(request):
         return render(request, "bookings/showclientbookings.html", {'bookings':bookings})
     except Exception as e:
         print('Error in showUserBookings due to: '+str(e))
-        inputBookingInfo()
+        inputBookingInfo(request)
 
 @login_required
 def getContactInfo(request):
     try:
-        getContactInfoForm = GetContactInforForm()
-        return render(request, "bookings/getcontactinfo.html", {'getContactInfoForm':getContactInfoForm})
+        if request.method == 'POST':
+            #roomId = request.POST.get('roomId')
+            context = {}
+            '''context['checkIn']            = request.session['checkIn']
+            context['checkOut']           = request.session['checkOut']
+            context['people']             = request.session['people']
+            context['room']               = Room.objects.get(id = request.POST.get('roomId'))
+            context['getContactInfoForm'] = GetContactInforForm()'''
+            print(context)
+            return 1
+            return render(request, "bookings/getcontactinfo.html", context)
     except Exception as e:
         print('Error in getContactInfo due to: '+str(e))
-        inputBookingInfo()
+        del request.session['checkIn']
+        del request.session['checkOut']
+        del request.session['people']
+        del request.session['room']
+        print('AAAAAAAAAAAAAAAAAA')
+        return inputBookingInfo(request)
+        
+
+
+
+def book(request):
+    pass

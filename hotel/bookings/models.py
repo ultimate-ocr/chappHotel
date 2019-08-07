@@ -35,15 +35,15 @@ class Booking(models.Model):
         'Room',
         on_delete=models.CASCADE,
     )
-    people = models.IntegerField(null=False, 
+    people      = models.IntegerField(null=False, 
                                blank=False, 
                                default=2)
-    client = models.ForeignKey(User, on_delete=models.CASCADE)
+    client      = models.ForeignKey(User, on_delete=models.CASCADE)
     
     telephone   = models.CharField(max_length=20)
     creditCard  = models.CharField(max_length=20)
 
-    comments = models.CharField(max_length=500)
+    comments    = models.CharField(max_length=500)
 
     @staticmethod
     def getAvailableRooms():
