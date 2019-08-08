@@ -9,14 +9,14 @@ from .forms import SearchForm, GetContactInforForm
 from .models import Booking, Room
 
 
-def inputBookingInfo(request):
+def inputBookingInfo(request, error=''):
     try:
         '''del request.session['checkIn']
         del request.session['checkOut']
         del request.session['people']
         del request.session['room']'''
         searchForm = SearchForm()
-        return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
+        return render(request, "bookings/searchroom.html", {'searchForm':searchForm, 'error': error})
     except Exception as e:
         print('Error in inputBookingInfo due to: '+str(e))
         return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
@@ -54,9 +54,9 @@ def searchRoom(request):
                         {'searchForm':searchForm, 'errorMessage':errorMessage})
     except Exception as e:
         print('Error in searchRoom due to: '+str(e))
-        inputBookingInfo()
+        return inputBookingInfo(request, 'Error while searching for available rooms')
 
-def checkLogIn(request):
+'''def checkLogIn(request):
     try:
         if request.method == 'POST':
             if 'user' in request:
@@ -65,7 +65,7 @@ def checkLogIn(request):
                 return JsonResponse({'redirectUrl':'/accounts/login'})
     except Exception as e:
         print('Error in checkLogin due to: '+str(e))
-        inputBookingInfo()
+        inputBookingInfo(request, 'Error while check if user is')'''
 
 
 @login_required(redirect_field_name='input_booking_info')
@@ -81,7 +81,6 @@ def redirectStaff(request):
             return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
     except Exception as e:
         print('Error in redirectStaff due to: '+str(e))
-        inputBookingInfo()
 
 
 @login_required(redirect_field_name='input_booking_info')
@@ -91,7 +90,7 @@ def showAllBookings(request):
         return render(request, "bookings/staffshowbooking.html", {'bookings':bookings,'all':'true'})
     except Exception as e:
         print('Error in showAllBookings due to: '+str(e))
-        inputBookingInfo()
+
 
 @login_required(redirect_field_name='input_booking_info')
 def cancelbooking(request):
@@ -101,10 +100,10 @@ def cancelbooking(request):
             booking = Booking.cancelBooking(bookingId)
             return JsonResponse({'status':'ok'})
         else:
-            return JsonResponse({'status':'ok'})
+            return JsonResponse({'status':'ko'})
     except Exception as e:
         print('Error in cancelBooking due to: '+str(e))
-        inputBookingInfo()
+        return inputBookingInfo(request, 'Error while canceling booking')
 
 @login_required(redirect_field_name='input_booking_info')
 def doCheckIn(request):
@@ -117,7 +116,7 @@ def doCheckIn(request):
             return JsonResponse({'status':'ok'})
     except Exception as e:
         print('Error in doCheckIn due to: '+str(e))
-        inputBookingInfo()
+        return inputBookingInfo(request, 'Error while doing checkIn')
 
 @login_required(redirect_field_name='input_booking_info')
 def doCheckOut(request):
@@ -130,7 +129,7 @@ def doCheckOut(request):
             return JsonResponse({'status':'ok'})
     except Exception as e:
         print('Error in searchRoom due to: '+str(e))
-        inputBookingInfo()
+        return inputBookingInfo(request, 'Error while doing checkout')
 
 @login_required(redirect_field_name='input_booking_info')
 def showTodayBookings(request):
@@ -148,7 +147,7 @@ def showUserBookings(request):
         return render(request, "bookings/showclientbookings.html", {'bookings':bookings})
     except Exception as e:
         print('Error in showUserBookings due to: '+str(e))
-        inputBookingInfo(request)
+        return inputBookingInfo(request, 'Error showing user bookings')
 
 @login_required(redirect_field_name='input_booking_info')
 def getContactInfo(request):
@@ -175,7 +174,7 @@ def getContactInfo(request):
         del request.session['checkIn']
         del request.session['checkOut']
         del request.session['people']
-        return inputBookingInfo(request)
+        return inputBookingInfo(request, 'Error while getting contact information')
         
 
 
@@ -201,4 +200,4 @@ def book(request):
         del request.session['checkIn']
         del request.session['checkOut']
         del request.session['people']
-        return inputBookingInfo(request)
+        return inputBookingInfo(request,'Error While finalising booking')

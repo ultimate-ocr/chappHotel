@@ -11,7 +11,7 @@ urlpatterns = [
     path('logedin',             views.redirectStaff, name='input_booking_info'),
     path('inputinfo',           views.inputBookingInfo, name='input_booking_info'),
     path('search',              views.searchRoom, name='search_room'),
-    path('checkLogIn',          views.checkLogIn, name='checkLogIn'),
+    #path('checkLogIn',          views.checkLogIn, name='checkLogIn'),
     url(r'^accounts/',          include('allauth.urls')),
     path('cancelbooking',       views.cancelbooking, name='cancel_booking'),
     path('docheckin',           views.doCheckIn, name='do_checkin'),

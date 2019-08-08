@@ -20,9 +20,6 @@ $(function () {
     });
 });
 
-
-
-
 function proceedToBook(roomId){
     console.log(roomId);
     $.ajax({
