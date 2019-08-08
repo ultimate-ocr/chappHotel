@@ -6,15 +6,11 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 
 from .forms import SearchForm, GetContactInforForm
-from .models import Booking, Room
+from .models import Booking, Room, Guest
 
 
 def inputBookingInfo(request, error=''):
     try:
-        '''del request.session['checkIn']
-        del request.session['checkOut']
-        del request.session['people']
-        del request.session['room']'''
         searchForm = SearchForm()
         return render(request, "bookings/searchroom.html", {'searchForm':searchForm, 'error': error})
     except Exception as e:
@@ -55,17 +51,7 @@ def searchRoom(request):
     except Exception as e:
         print('Error in searchRoom due to: '+str(e))
         return inputBookingInfo(request, 'Error while searching for available rooms')
-
-'''def checkLogIn(request):
-    try:
-        if request.method == 'POST':
-            if 'user' in request:
-                return JsonResponse({'redirectUrl':'/bookininfo'})
-            else:
-                return JsonResponse({'redirectUrl':'/accounts/login'})
-    except Exception as e:
-        print('Error in checkLogin due to: '+str(e))
-        inputBookingInfo(request, 'Error while check if user is')'''
+    
 
 
 @login_required(redirect_field_name='input_booking_info')
@@ -112,9 +98,8 @@ def cancelbooking(request):
 def doCheckIn(request):
     try:
         if request.method == 'POST':
-            data = request.POST.get('name1', 'None')
-            print(data)
-            print('AAAAAAAAAAAA')
+            Guest.storeGuestsNames(request)
+
             bookingId = request.POST.get('bookingId')
             booking = Booking.doCheckIn(bookingId)
             return JsonResponse({'status':'ok'})
@@ -128,7 +113,7 @@ def doCheckIn(request):
 
 
 
-        
+
 @login_required(redirect_field_name='input_booking_info')
 def doCheckOut(request):
     try:

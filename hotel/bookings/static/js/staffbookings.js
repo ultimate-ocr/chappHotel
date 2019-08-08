@@ -61,7 +61,7 @@ function generateNamesForm(numOfPeople){
                  '     <label>Surname '+i+'</label>'+
                  '  </div>'+
                  '  <div>'+
-                 '       <input type="text" name="surame'+i+'" placeholder="Surame">'+
+                 '       <input type="text" name="surname'+i+'" placeholder="Surame">'+
                  '  </div>'+
                  '<br>';    
     }
@@ -79,7 +79,7 @@ function getGuestsNames(bookingId, numOfPeople){
             confirm: function () {
                 var form = document.getElementById('namesForm');
                 var formData = new FormData(form);
-                doCheckIn(bookingId, formData);
+                doCheckIn(bookingId, formData, numOfPeople);
             },
             cancel: function () {
                 $.alert('Canceled!');
@@ -93,23 +93,27 @@ function getGuestsNames(bookingId, numOfPeople){
 
 
 
-function doCheckIn(bookingId, formData){
+function doCheckIn(bookingId, formData, numOfPeople){
     
     
     formData.append('bookingId', bookingId);
+    formData.append('numOfPeople', numOfPeople);
 
-
-    console.log(formData.values('bookingId'));
     for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]); 
     }
 
     $.ajax({
-        url: '/docheckin',
-        data: formData,
-        dataType: 'json',
         type: 'POST',
+        url: '/docheckin',
+        dataType: 'json',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
         processData: false,
+
         success: function(response) {
             if (response.status == 'ok'){
                 alert('Check in successfully performed');

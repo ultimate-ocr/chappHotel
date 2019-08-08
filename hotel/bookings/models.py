@@ -66,7 +66,7 @@ class Booking(models.Model):
     def doCheckIn(bookingId):
         booking = Booking.objects.get(id = bookingId)
         booking.status = Booking.CHECKIN
-        booking.save()
+        #booking.save()
 
 
     @staticmethod
@@ -102,6 +102,17 @@ class Booking(models.Model):
 
 
 class Guest(models.Model):
-    FirstName = models.CharField(max_length = 100)
-    LastName  = models.CharField(max_length = 100)
+    firstName = models.CharField(max_length = 100)
+    lastName  = models.CharField(max_length = 100)
     book      = models.ForeignKey(Booking,on_delete=models.CASCADE)
+
+
+    def storeGuestsNames(request):
+        name = request.POST.get('name1','none')
+        numOfPeople = int(request.POST.get('numOfPeople','none'))
+        print('AAAAAAAAAAAAAAA')
+        bookId = int(request.POST.get('bookingId','none'))
+        for i in range(1,numOfPeople+1):
+            name =  request.POST.get('name' + str(i),'none')   
+            surname = request.POST.get('surname' + str(i),'none')   
+            Guest(firstName = name, lastName = surname, book_id = bookId).save()
