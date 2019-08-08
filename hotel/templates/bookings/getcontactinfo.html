@@ -1,0 +1,62 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chapp Hotel</title>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+    </script>
+
+    <style>
+        body{
+            position:relative;
+        }
+
+    </style>
+</head>
+<body>
+    <div style="float:left">
+        <div>
+            <label>Check In date: </label>{{checkIn}}
+        </div>
+        <div>
+            <label>Check out date: </label> {{checkOut}}
+        </div>
+        <div>
+            <label>Number of people:</label> {{people}}
+        </div>
+        <div>
+            <label>Room:</label> {{roomDescription}}
+        </div>
+        <div>
+            <label>Price:</label> {{price}} &euro;
+        </div>
+        <form action="/book" method="post">
+            <table>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{getContactInfoForm.as_table}}
+                            <tr>
+                            <td>&nbsp;</td>
+                            <td><input type="submit" value="Submit"></td>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
+            </table>
+            {{error}} 
+            {% csrf_token %}
+        </form>
+    </div>
+
+    <div style="float:right">
+        <div>
+            <a href="/profile">Check your bookings</a>    
+        </div>
+        <div>
+            <a href="/accounts/logout">Log Out</a>
+        </div>
+    </div>
+</body>

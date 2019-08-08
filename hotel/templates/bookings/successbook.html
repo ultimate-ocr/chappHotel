@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chapp Hotel</title>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous">
+    </script>
+
+    <style>
+        body{
+            position:relative;
+        }
+
+    </style>
+</head>
+<body>
+    <div align="center">
+        <div>
+            <h1>Booking successfully processed</h1>
+        </div>
+        <div align="left">
+            <div>
+                <label>Check In date: </label>{{checkIn}}
+            </div>
+            <div>
+                <label>Check out date: </label> {{checkOut}}
+            </div>
+            <div>
+                <label>Number of people:</label> {{people}}
+            </div>
+            <div>
+                <label>Room:</label> {{room.description}}
+            </div>
+            <div>
+                <label>Price:</label> {{price}} &euro;
+            </div>
+            <div>
+                <label>Booking id:</label> {{id}}
+            </div>
+            <div>
+                <label>Telephone: </label>{{telephone}}
+            </div>
+            <div>
+                <label>Creditcard: </label> {{creditCard}}
+            </div>
+            <div>
+                <label>Comments:</label> {{comments}}
+            </div>
+        </div>
+    </div>
+    {{context}}
+    <div style="float:right">
+        <div>
+            <a href="/">Search again</a>    
+        </div>
+        <div>
+            <a href="/profile">Check all your bookings</a>    
+        </div>
+        <div>
+            <a href="/accounts/logout">Log Out</a>
+        </div>
+    </div>
+</body>
