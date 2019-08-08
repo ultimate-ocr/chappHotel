@@ -14,6 +14,9 @@ class Room(models.Model):
     def getRoom(roomId):
         return Room.objects.get(id = roomId)
 
+    def __str__(self):
+        return 'Room number: ' + str(self.id) + ' Habitability:' + str(self.peopleMax) + ' people'
+
 
 class Booking(models.Model):
     CONFIRMADA = 'conf'
@@ -100,6 +103,9 @@ class Booking(models.Model):
 
         return booking
 
+    def __str__(self):
+        return 'CheckIn: ' + str(self.checkInDate) + ' Num. of People: ' + str(self.people)
+
 
 class Guest(models.Model):
     firstName = models.CharField(max_length = 100)
@@ -116,3 +122,7 @@ class Guest(models.Model):
             name =  request.POST.get('name' + str(i),'none')   
             surname = request.POST.get('surname' + str(i),'none')   
             Guest(firstName = name, lastName = surname, book_id = bookId).save()
+
+
+    def __str__(self):
+        return self.firstName + self.lastName

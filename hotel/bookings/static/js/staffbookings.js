@@ -55,13 +55,13 @@ function generateNamesForm(numOfPeople){
                  '     <label>Name '+i+'</label>'+
                  '  </div>'+
                  '  <div>'+
-                 '       <input type="text" name="name'+i+'" placeholder="Name">'+
+                 '       <input type="text" name="name'+i+'" placeholder="Name'+i+'" required>'+
                  '  </div>'+
                  '  <div>'+
                  '     <label>Surname '+i+'</label>'+
                  '  </div>'+
                  '  <div>'+
-                 '       <input type="text" name="surname'+i+'" placeholder="Surame">'+
+                 '       <input type="text" required name="surname'+i+'" placeholder="Surname'+i+'">'+
                  '  </div>'+
                  '<br>';    
     }
