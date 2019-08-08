@@ -40,6 +40,31 @@ function proceedToBook(roomId){
     });
 }
 
+function cancelBooking(bookingId){
+    $.ajax({
+        url: '/cancelbooking',
+        data: {
+            'bookingId': bookingId,
+        },
+        type: 'POST',
+        success: function(response) {
+            if (response.status == 'ok'){
+                alert('Booking successfully cancelled');
+                location.reload();
+            }
+            else{
+                alert('Problem while cancelling booking');
+                location.reload();
+            }
+            
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+
 
 $(document).ready( function () {
     $('#bookings').DataTable();

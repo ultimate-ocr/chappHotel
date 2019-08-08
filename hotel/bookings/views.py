@@ -185,7 +185,7 @@ def book(request):
         context = {}
         booking = Booking.performBook(request)
 
-        conotext['id']          = booking.id
+        context['id']           = booking.id
         context['telephone']    = request.POST.get('telephone')
         context['creditCard']   = request.POST.get('creditCard')
         context['comments']     = request.POST.get('comments')
