@@ -2,6 +2,8 @@
 <head>
   <meta charset="utf-8">
   <title>Chapp Hotel</title>
+  {% load static %}
+  
     <script
     src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -20,7 +22,7 @@
         }
 
     </style>
-    <link rel="shortcut icon" href="">
+    <link href="{% static 'favicon.ico' %}" rel="icon" type="image/x-icon" />
 </head>
 <div style="float:left">
     <form action="/search" method="post">
