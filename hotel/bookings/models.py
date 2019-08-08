@@ -52,8 +52,12 @@ class Booking(models.Model):
     price       = models.IntegerField(default=0)
 
     @staticmethod
-    def getAvailableRooms():
-        pass
+    def getAvailableRooms(checkIn, checkOut, people):
+        return Room.objects.filter(peopleMax__gte = people).\
+                                exclude(Q(booking__checkInDate__range = (checkIn, checkOut)) |\
+                                        Q(booking__checkOutDate__range = (checkIn, checkOut)))
+        
+
     @staticmethod
     def getAllBookings():
         return Booking.objects.all()
@@ -69,7 +73,7 @@ class Booking(models.Model):
     def doCheckIn(bookingId):
         booking = Booking.objects.get(id = bookingId)
         booking.status = Booking.CHECKIN
-        #booking.save()
+        booking.save()
 
 
     @staticmethod
@@ -116,7 +120,6 @@ class Guest(models.Model):
     def storeGuestsNames(request):
         name = request.POST.get('name1','none')
         numOfPeople = int(request.POST.get('numOfPeople','none'))
-        print('AAAAAAAAAAAAAAA')
         bookId = int(request.POST.get('bookingId','none'))
         for i in range(1,numOfPeople+1):
             name =  request.POST.get('name' + str(i),'none')   

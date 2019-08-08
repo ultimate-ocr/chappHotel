@@ -21,7 +21,21 @@ $(function () {
 });
 
 
+function checkOutConfirm(bookingId){
 
+    $.confirm({
+        title: 'Check Out confirmation',
+        content: 'Confirm process check out',
+        buttons: {
+            confirm: function () {
+                cancelBooking(bookingId);
+            },
+            cancel: function () {
+                $.alert('Canceled!');
+            },
+        }
+    });
+}
 
 function cancelBooking(bookingId){
     $.ajax({
@@ -73,7 +87,7 @@ function generateNamesForm(numOfPeople){
 function getGuestsNames(bookingId, numOfPeople){
 
     $.confirm({
-        title: 'Confirm!',
+        title: 'Check In process',
         content: generateNamesForm(numOfPeople),
         buttons: {
             confirm: function () {

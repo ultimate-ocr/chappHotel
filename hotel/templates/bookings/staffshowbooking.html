@@ -14,8 +14,6 @@
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
-
 </head>
 
 <body>
@@ -38,7 +36,7 @@
                         <td>{{booking.checkOutDate}}</td>
                         <td>{{booking.room_id}}</td>
                         <td>{{booking.status }} </td>
-                        <td>{{booking.price }} </td>
+                        <td>{{booking.price }} &euro;</td>
                         {% if booking.status == 'conf' %}
                             <td>
                                 <input type="button" value="Cancel " onclick="cancelBooking({{booking.id}})">
@@ -48,7 +46,11 @@
                             </td>
                         {% elif booking.status == 'cIn' %}
                             <td>
-                                <input type="button" value="CheckOut " onclick="doCheckOut({{booking.id}})">
+                                <input type="button" value="CheckOut " onclick="checkOutConfirm({{booking.id}})">
+                            </td>
+                        {% elif booking.status == 'canc' %}
+                            <td>
+                                <label>Canceled</label>
                             </td>
                         {% endif %}
                     </tr>

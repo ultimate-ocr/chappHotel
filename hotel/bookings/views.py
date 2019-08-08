@@ -37,9 +37,7 @@ def searchRoom(request):
             
             days = (checkOut - checkIn).days
 
-            rooms = Room.objects.filter(peopleMax__gte = people).\
-                                exclude(Q(booking__checkInDate__range = (checkIn, checkOut)) |\
-                                        Q(booking__checkOutDate__range = (checkIn, checkOut)))
+            rooms = Booking.getAvailableRooms(checkIn, checkOut, people)
             if len(rooms) > 0:
                 request.session['days']             = days
                 return render(request, "bookings/showResults.html", {'rooms':rooms, 'days': days})
@@ -51,18 +49,16 @@ def searchRoom(request):
     except Exception as e:
         print('Error in searchRoom due to: '+str(e))
         return inputBookingInfo(request, 'Error while searching for available rooms')
-    
+
 
 
 @login_required(redirect_field_name='input_booking_info')
 def redirectStaff(request):
     try:
         if request.user.is_staff:
-            print('STAFF')
             bookings = Booking.getAllBookings()
             return render(request, "bookings/staffshowbooking.html", {'bookings':bookings, 'all':'true'})
         else:
-            print('CIVIL')
             searchForm = SearchForm()
             return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
     except Exception as e:
@@ -108,9 +104,6 @@ def doCheckIn(request):
     except Exception as e:
         print('Error in doCheckIn due to: '+str(e))
         return inputBookingInfo(request, 'Error while doing checkIn')
-
-
-
 
 
 
