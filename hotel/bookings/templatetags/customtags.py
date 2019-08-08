@@ -4,4 +4,4 @@ register = template.Library()
 
 @register.filter
 def mult(dayPrice, NumOfDays):
-    return dayPrice % NumOfDays
+    return dayPrice * NumOfDays

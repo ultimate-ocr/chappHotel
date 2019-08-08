@@ -7,22 +7,19 @@ from datetime import date
 
 from .forms import SearchForm, GetContactInforForm
 from .models import Booking, Room
-'''
-class views(view):
-    def home():
-        pass
-'''
+
 
 def inputBookingInfo(request):
     try:
-        del request.session['checkIn']
+        '''del request.session['checkIn']
         del request.session['checkOut']
         del request.session['people']
-        del request.session['room']
+        del request.session['room']'''
         searchForm = SearchForm()
         return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
     except Exception as e:
         print('Error in inputBookingInfo due to: '+str(e))
+        return render(request, "bookings/searchroom.html", {'searchForm':searchForm})
 
 @login_required(redirect_field_name='input_booking_info')
 def searchRoom(request):
@@ -71,7 +68,7 @@ def checkLogIn(request):
         inputBookingInfo()
 
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def redirectStaff(request):
     try:
         if request.user.is_staff:
@@ -87,7 +84,7 @@ def redirectStaff(request):
         inputBookingInfo()
 
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def showAllBookings(request):
     try:
         bookings = Booking.getAllBookings()
@@ -96,7 +93,7 @@ def showAllBookings(request):
         print('Error in showAllBookings due to: '+str(e))
         inputBookingInfo()
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def cancelbooking(request):
     try:
         if request.method == 'POST':
@@ -109,7 +106,7 @@ def cancelbooking(request):
         print('Error in cancelBooking due to: '+str(e))
         inputBookingInfo()
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def doCheckIn(request):
     try:
         if request.method == 'POST':
@@ -122,7 +119,7 @@ def doCheckIn(request):
         print('Error in doCheckIn due to: '+str(e))
         inputBookingInfo()
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def doCheckOut(request):
     try:
         if request.method == 'POST':
@@ -135,7 +132,7 @@ def doCheckOut(request):
         print('Error in searchRoom due to: '+str(e))
         inputBookingInfo()
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def showTodayBookings(request):
     try:
         bookings = Booking.getTodayBookings()
@@ -144,7 +141,7 @@ def showTodayBookings(request):
         print('Error in showTodaysBookings due to: '+str(e))
         inputBookingInfo()
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def showUserBookings(request):
     try:
         bookings = Booking.getUserBookings(request.user)
@@ -153,31 +150,55 @@ def showUserBookings(request):
         print('Error in showUserBookings due to: '+str(e))
         inputBookingInfo(request)
 
-@login_required
+@login_required(redirect_field_name='input_booking_info')
 def getContactInfo(request):
     try:
         if request.method == 'POST':
-            #roomId = request.POST.get('roomId')
+            request.session['roomId']     = request.POST.get('roomId', None)
+            return JsonResponse({'redirectUrl':'/getcontactinfo'})
+        else:
+            room     = Room.getRoom(request.session['roomId'])
+            
             context = {}
-            '''context['checkIn']            = request.session['checkIn']
-            context['checkOut']           = request.session['checkOut']
-            context['people']             = request.session['people']
-            context['room']               = Room.objects.get(id = request.POST.get('roomId'))
-            context['getContactInfoForm'] = GetContactInforForm()'''
-            print(context)
-            return 1
+            context['checkIn']  = request.session['checkIn']
+            context['checkOut'] = request.session['checkOut']
+            checkInDate  = datetime.datetime.strptime(context['checkIn'], "%d-%m-%Y").date()
+            checkOutDate  = datetime.datetime.strptime(context['checkOut'], "%d-%m-%Y").date()
+            
+            context['people'] = request.session['people']
+            context['roomDescription']    = room.description
+            context['getContactInfoForm'] = GetContactInforForm()
+            context['price']              = room.price*(checkOutDate-checkInDate).days
             return render(request, "bookings/getcontactinfo.html", context)
     except Exception as e:
         print('Error in getContactInfo due to: '+str(e))
         del request.session['checkIn']
         del request.session['checkOut']
         del request.session['people']
-        del request.session['room']
-        print('AAAAAAAAAAAAAAAAAA')
         return inputBookingInfo(request)
         
 
 
-
+@login_required(redirect_field_name='input_booking_info')
 def book(request):
-    pass
+    try:
+        context = {}
+        booking = Booking.performBook(request)
+
+        conotext['id']          = booking.id
+        context['telephone']    = request.POST.get('telephone')
+        context['creditCard']   = request.POST.get('creditCard')
+        context['comments']     = request.POST.get('comments')
+        context['checkIn']      = request.session['checkIn']
+        context['checkOut']     = request.session['checkOut']
+        context['people']       = request.session['people']
+        context['room']         = booking.room
+        context['price']        = booking.price
+        return render(request, "bookings/successbook.html", context)
+
+    except Exception as e:
+        print(str(e))
+        del request.session['checkIn']
+        del request.session['checkOut']
+        del request.session['people']
+        return inputBookingInfo(request)

@@ -23,16 +23,16 @@ $(function () {
 
 
 
-function ProceedToBook(roomId, days){
+function proceedToBook(roomId){
+    console.log(roomId);
     $.ajax({
         url: '/getcontactinfo',
         data: {
-            'roomId': roomId,
+            "roomId": roomId,
         },
         type: 'POST',
         success: function(response) {
-            console.log(response.redirectUrl);
-            window.location.replace('/getcontactinfo');
+            window.location.replace(response.redirectUrl);
         },
         error: function(error) {
             console.log(error);
