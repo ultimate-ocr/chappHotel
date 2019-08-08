@@ -105,10 +105,16 @@ def cancelbooking(request):
         print('Error in cancelBooking due to: '+str(e))
         return inputBookingInfo(request, 'Error while canceling booking')
 
+
+
+
 @login_required(redirect_field_name='input_booking_info')
 def doCheckIn(request):
     try:
         if request.method == 'POST':
+            data = request.POST.get('name1', 'None')
+            print(data)
+            print('AAAAAAAAAAAA')
             bookingId = request.POST.get('bookingId')
             booking = Booking.doCheckIn(bookingId)
             return JsonResponse({'status':'ok'})
@@ -118,6 +124,11 @@ def doCheckIn(request):
         print('Error in doCheckIn due to: '+str(e))
         return inputBookingInfo(request, 'Error while doing checkIn')
 
+
+
+
+
+        
 @login_required(redirect_field_name='input_booking_info')
 def doCheckOut(request):
     try:

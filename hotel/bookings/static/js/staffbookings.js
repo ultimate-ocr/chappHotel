@@ -47,13 +47,69 @@ function cancelBooking(bookingId){
     });
 }
 
-function doCheckIn(bookingId){
+function generateNamesForm(numOfPeople){
+    content = '<form id="namesForm">';
+    for (i = 1; i <= numOfPeople; i++)
+    {
+        content +='  <div>'+
+                 '     <label>Name '+i+'</label>'+
+                 '  </div>'+
+                 '  <div>'+
+                 '       <input type="text" name="name'+i+'" placeholder="Name">'+
+                 '  </div>'+
+                 '  <div>'+
+                 '     <label>Surname '+i+'</label>'+
+                 '  </div>'+
+                 '  <div>'+
+                 '       <input type="text" name="surame'+i+'" placeholder="Surame">'+
+                 '  </div>'+
+                 '<br>';    
+    }
+    content += '</form>'
+    return content
+}
+
+
+function getGuestsNames(bookingId, numOfPeople){
+
+    $.confirm({
+        title: 'Confirm!',
+        content: generateNamesForm(numOfPeople),
+        buttons: {
+            confirm: function () {
+                var form = document.getElementById('namesForm');
+                var formData = new FormData(form);
+                doCheckIn(bookingId, formData);
+            },
+            cancel: function () {
+                $.alert('Canceled!');
+            },
+        }
+    });
+}
+
+
+
+
+
+
+function doCheckIn(bookingId, formData){
+    
+    
+    formData.append('bookingId', bookingId);
+
+
+    console.log(formData.values('bookingId'));
+    for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+    }
+
     $.ajax({
         url: '/docheckin',
-        data: {
-            'bookingId': bookingId,
-        },
+        data: formData,
+        dataType: 'json',
         type: 'POST',
+        processData: false,
         success: function(response) {
             if (response.status == 'ok'){
                 alert('Check in successfully performed');
@@ -69,6 +125,8 @@ function doCheckIn(bookingId){
         }
     });
 }
+
+
 
 function doCheckOut(bookingId){
     $.ajax({
