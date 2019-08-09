@@ -17,57 +17,66 @@
 </head>
 
 <body>
-    <div style="float:left">
-        <table id="bookings" class="display">
-            <thead>
-                <tr>
-                    <th>Check In Date</th>
-                    <th>Check Out Date</th>
-                    <th>Room Number</th>
-                    <th>Status</th>
-                    <th>Total Price</th>
-                    <th>Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in bookings %}
-                    <tr>
-                        <td>{{booking.checkInDate}}</td>
-                        <td>{{booking.checkOutDate}}</td>
-                        <td>{{booking.room_id}}</td>
-                        <td>{{booking.status }} </td>
-                        <td>{{booking.price }} &euro;</td>
-                        {% if booking.status == 'conf' %}
-                            <td>
-                                <input type="button" value="Cancel " onclick="cancelBooking({{booking.id}})">
-                            {% if not all %}
-                                <input type="button" value="CheckIn " onclick="getGuestsNames({{booking.id}},{{booking.people}})">                        
-                                {% endif %}
-                            </td>
-                        {% elif booking.status == 'cIn' %}
-                            <td>
-                                <input type="button" value="CheckOut " onclick="checkOutConfirm({{booking.id}})">
-                            </td>
-                        {% elif booking.status == 'canc' %}
-                            <td>
-                                <label>Canceled</label>
-                            </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div style="float:right">
-        <div>
-        {% if all  %}
-            <a href="/showtodaybookings">View today bookings</a>
+    <div>
+        {% if all %}
+            <h1>All bookings</h1>
         {% else %}
-            <a href="/logedin">View all bookings</a>
+            <h1>Today's bookings</h1>
         {% endif %}
+    </div>
+    <div>
+        <div style="float:left">
+            <table id="bookings" class="display">
+                <thead>
+                    <tr>
+                        <th>Check In Date</th>
+                        <th>Check Out Date</th>
+                        <th>Room Number</th>
+                        <th>Status</th>
+                        <th>Total Price</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                        <tr>
+                            <td>{{booking.checkInDate}}</td>
+                            <td>{{booking.checkOutDate}}</td>
+                            <td>{{booking.room_id}}</td>
+                            <td>{{booking.status }} </td>
+                            <td>{{booking.price }} &euro;</td>
+                            {% if booking.status == 'conf' %}
+                                <td>
+                                    <input type="button" value="Cancel " onclick="cancelBooking({{booking.id}})">
+                                {% if not all %}
+                                    <input type="button" value="CheckIn " onclick="getGuestsNames({{booking.id}},{{booking.people}})">                        
+                                    {% endif %}
+                                </td>
+                            {% elif booking.status == 'cIn' %}
+                                <td>
+                                    <input type="button" value="CheckOut " onclick="checkOutConfirm({{booking.id}})">
+                                </td>
+                            {% elif booking.status == 'canc' %}
+                                <td>
+                                    <label>Canceled</label>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <div>
-            <a href="/accounts/logout">Log Out</a>
+        <div style="float:right">
+            <div>
+            {% if all  %}
+                <a href="/showtodaybookings">View today bookings</a>
+            {% else %}
+                <a href="/logedin">View all bookings</a>
+            {% endif %}
+            </div>
+            <div>
+                <a href="/accounts/logout">Log Out</a>
+            </div>
         </div>
     </div>
 
