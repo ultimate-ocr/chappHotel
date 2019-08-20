@@ -20,6 +20,7 @@ urlpatterns = [
     path('profile',             views.showUserBookings, name='show_user_bookings'),
     path('getcontactinfo',      views.getContactInfo, name='get_contact_info'),
     path('book',                views.book, name='book'),
+    path('shohDetails',         views.showDetails, name='showDetails'),
     
     
 ]

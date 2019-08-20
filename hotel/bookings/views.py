@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from datetime import date
+from django.core import serializers
 
 from .forms import SearchForm, GetContactInforForm
 from .models import Booking, Room, Guest
@@ -190,3 +191,16 @@ def book(request):
         del request.session['checkOut']
         del request.session['people']
         return inputBookingInfo(request,'Error While finalising booking')
+        
+
+@login_required(redirect_field_name='input_booking_info')
+def showDetails(request):
+    try:
+        if request.method == 'POST':
+                bookingId = request.POST.get('bookingId', None)
+                booking   = Booking.objects.filter(id = bookingId)
+                booking   = list(booking.values())
+                return JsonResponse({'status':'ok', 'booking': booking})
+    except Exception as e:
+        print('Error in show details due to: '+str(e))
+        return JsonResponse({'status':'ko'})

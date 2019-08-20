@@ -35,6 +35,7 @@
                         <th>Status</th>
                         <th>Total Price</th>
                         <th>Options</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +61,14 @@
                                 <td>
                                     <label>Canceled</label>
                                 </td>
+                            {% elif booking.status == 'cOut' %}
+                            <td>
+                                <label>Finalized    </label>
+                            </td>
                             {% endif %}
+                            <td>
+                                <input type="button" value="View " onclick="showDetails({{booking.id}})">
+                            </td>
                         </tr>
                         {% endfor %}
                 </tbody>
