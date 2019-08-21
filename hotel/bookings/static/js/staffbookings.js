@@ -198,38 +198,14 @@ $(document).ready( function () {
 } );
 
 function openModal(booking){
-    content = '<div>'+
-              '    <label>Check In date: </label>'+ booking['checkInDate'] +
-              '</div>'+
-              '<br>'+
-               '<div>'+
-               '   <label>Check out date: </label>'+ booking['checkOutDate'] +
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Creation Date: </label>'+ booking['creationDate'] +
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Number of people: </label>'+ booking['people'] +
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Price: </label>'+ booking['price'] +'&#x20AC;'+
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Status: </label>'+ booking['status'] +
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Room: </label>'+ booking['room_id'] +
-               '</div>'+
-               '<br>'+
-               '<div>'+
-               '   <label>Cooments: </label>'+ booking['comments'] +
-               '</div>';
-    
+    content = '';
+    for (var key in booking) {
+        if (booking.hasOwnProperty(key))
+          content += '<div>'+
+          '   <label>'+ key +': </label>'+ booking[key] +
+          '</div>';
+      }
+
     $.alert({
         title: '<h1>Booking Information</h1>',
         content: content,
