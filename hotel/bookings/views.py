@@ -199,7 +199,8 @@ def showDetails(request):
         if request.method == 'POST':
                 bookingId = request.POST.get('bookingId', None)
                 booking   = Booking.objects.filter(id = bookingId)
-                booking   = list(booking.values())
+                booking   = list(booking.values('checkInDate', 'checkOutDate', 'creationDate',
+                                                                'status', 'people', 'telephone', 'comments', 'price'))
                 return JsonResponse({'status':'ok', 'booking': booking})
     except Exception as e:
         print('Error in show details due to: '+str(e))
